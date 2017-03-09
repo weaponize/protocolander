@@ -6,7 +6,7 @@ This repository contains a very basic Wireshark protocol detector written in Lua
 
 Make sure the Wireshark Lua init file ${HOME}/.wireshark/init.lua contains a command to load your protocol parser.
 
-dofile("${HOME}/protocolander/target_protocol.lua")
+dofile(os.getenv("HOME") .. "/protocolander/target_protocol.lua")
 
 ## Setting default port
 
