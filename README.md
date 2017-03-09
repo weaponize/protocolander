@@ -1,0 +1,18 @@
+# Protocolander
+
+This repository contains a very basic Wireshark protocol detector written in Lua. I hope you find it useful when documenting unknown protocols. Happy protocol reversing.
+
+## Enabling target_protocol.lua in Wireshark
+
+Make sure the Wireshark Lua init file ${HOME}/.wireshark/init.lua contains a command to load your protocol parser.
+
+dofile("${HOME}/protocolander/target_protocol.lua")
+
+## Setting default port
+
+The current example shows setting a default TCP port of 4444 for the dissector. You should change this value according to your target.
+
+## Included Client and Server
+
+There are two Ruby scripts in the repo to act as the client and server of a made up protocol. You can use the target_protocol.lua dissector to dissect this protocol in Wireshark. This can serve as a playground for people to learn about both writing protocols and dissecting their network packets.
+
