@@ -1,6 +1,6 @@
 # Protocolander
 
-This repository contains a very basic Wireshark protocol detector written in Lua. I hope you find it useful when documenting unknown protocols. Happy protocol reversing. In addition, I have included a client and server written in Ruby. These programs are used to speak a made up protocol to each other, which the Wireshark decoder will parse. This is a very basic example to guide you learning about either Wireshark Lua protocol decoders and/or Ruby client/server protocol development. 
+This repository contains a very basic Wireshark protocol dissector written in Lua. I hope you find it useful when documenting unknown protocols. Happy protocol reversing. In addition, I have included a client and server written in Ruby. These programs are used to speak a made up protocol to each other, which the Wireshark decoder will parse. This is a very basic example to guide you learning about either Wireshark Lua protocol decoders and/or Ruby client/server protocol development. 
 
 ## Enabling target_protocol.lua in Wireshark
 
