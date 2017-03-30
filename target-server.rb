@@ -49,8 +49,11 @@ class TargetServer
     end
     
     # 
-    def server_packet_1
-        %Q{0000001024424242424242424242424242424242}.scan(/../).map{|b| b.hex}.pack("C*")
+    def server_packet_respond_with_length(length)
+        pktlen = 0x04 + length
+        type = 0x23
+        data = Random.new.bytes(length)
+        [pktlen, type, data].pack("NNa*")
     end
 
     def server_packet_2
@@ -64,9 +67,12 @@ class TargetServer
         Hexdump.dump pkt
         
         # parse stuff here
+        type, pkt = pkt.unpack("Na*")
         
-        if payload_length <= 0x0f
-            client.write server_packet_1
+        if type == 0x24
+            requested_length, pkt = pkt.unpack("Na*")
+            STDERR.printf("Server received 0x24 request for 0x%08x bytes of data...\n", requested_length)
+            client.write server_packet_respond_with_length(requested_length)
         else
             client.write server_packet_2
         end

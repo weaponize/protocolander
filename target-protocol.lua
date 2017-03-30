@@ -5,7 +5,7 @@ target_proto = Proto("target","Target Protocol")
 
 -- Defining the fields 
 local target_length             = ProtoField.uint32("target.len", "Length", base.HEX)
-local target_static1            = ProtoField.uint8("target.static1", "Static Field", base.HEX)
+local target_type               = ProtoField.uint32("target.type", "Static Field", base.HEX)
 local target_direction          = ProtoField.uint8("target.direction", "Direction", base.HEX)
 local target_opcode             = ProtoField.uint8("target.type", "Opcode", base.HEX)
 local target_opcode_option      = ProtoField.uint8("target.option", "Opcode Opt", base.HEX)
@@ -19,7 +19,7 @@ local target_crc                = ProtoField.uint8("target.chk", "CRC", base.HEX
 -- example I followed said not to do the fields like this, risk of missing some
 target_proto.fields = {
     target_length,
-    target_static1,
+    target_type,
     target_direction,
     target_opcode,
     target_opcode_option,
@@ -69,14 +69,14 @@ function target_proto.dissector(tvbuf,pinfo,tree)
     -- handle message fragmentation here
     if trglength:uint() + 4 > pktlen then
         -- full message not yet received
-        pinfo.desegment_len = trglen - 4 - pktlen -- int underflow here
+        pinfo.desegment_len = trglength:uint() - 4 - pktlen -- int underflow here
         return
     end
     
     
-    static1 = tvbuf:range(offset, 1)
-    subtree:add(target_static1, static1)
-    offset = offset + 1
+    type = tvbuf:range(offset, 4)
+    subtree:add(target_type, type)
+    offset = offset + 4
 
     direction = tvbuf:range(offset, 1)
     subtree:add(target_direction, direction)
