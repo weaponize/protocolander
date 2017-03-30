@@ -60,10 +60,19 @@ function target_proto.dissector(tvbuf,pinfo,tree)
     local crc           
 
     -- this parse presumes that at least 10 bytes in total
+    -- TODO actually test the length maybe
     trglength = tvbuf:range(offset, 4)
     subtree:append_text(string.format(" pktlen=0x%08x, len=0x%08x", pktlen, trglength:uint()))
     subtree:add(target_length, trglength)
     offset = offset + 4
+    
+    -- handle message fragmentation here
+    if trglength:uint() + 4 > pktlen then
+        -- full message not yet received
+        pinfo.desegment_len = trglen - 4 - pktlen -- int underflow here
+        return
+    end
+    
     
     static1 = tvbuf:range(offset, 1)
     subtree:add(target_static1, static1)
